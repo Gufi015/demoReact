@@ -3,16 +3,17 @@ import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 import PlaceInput from "./src/components/PlaceInput/PlaceInput";
 import PlaceList from "./src/components/PlaceList/PlaceList";
-
+import PlaceDetail from "./src/components/PlaceDetail/PlaceDetail";
 
 export default class App extends Component {
   state = {
-    places: []
+    places: [],
+    selectedPlace: null
   };
 
   placeAdd = placeName => {
     this.setState(prevState => {
-      return{
+      return {
         places: prevState.places.concat({
           key: Math.random(),
           name: placeName,
@@ -24,11 +25,28 @@ export default class App extends Component {
     });
   };
 
-  placeDelete = key =>{
+  placeDelete = () => {
+    this.setState(prevState => {
+        return {
+          places: prevState.places.filter(place => {
+            return place.key !== prevState.selectedPlace.key;
+          }),
+          selectedPlace: null
+        };
+    });
+  };
+
+  modalClose = () => {
+    this.setState({
+      selectedPlace: null
+    });
+  };
+
+  placeSelected = key =>{
     this.setState(prevState => {
       return {
-        places: prevState.places.filter(place => {
-          return place.key !== key;
+        selectedPlace: prevState.places.find(place => {
+          return place.key === key;
         })
       };
     });
@@ -36,12 +54,16 @@ export default class App extends Component {
 
 
   render() {
-    return(
+    return (
       <View style={styles.container}>
+        <PlaceDetail
+          selectedPlace={this.state.selectedPlace}
+          onItemDeleted={this.placeDelete}
+          onModalClosed={this.modalClose} />
         <PlaceInput onPlaceAdded={this.placeAdd} />
         <PlaceList
           places={this.state.places}
-          onItemDeleted={this.placeDelete}
+          onItemSelected={this.placeSelected}
         />
       </View>
     );
