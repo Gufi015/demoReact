@@ -25,7 +25,6 @@ class App extends Component {
     this.props.onSelectPlace(key);
   };
 
-
   render() {
     return (
       <View style={styles.container}>
@@ -54,11 +53,10 @@ const styles = StyleSheet.create({
 });
 
 
-
 const mapStateToProps = state => {
   return {
     places: state.places.places,
-    selectPlace: state.places.selectedPlace
+    selectedPlace: state.places.selectedPlace
   };
 };
 

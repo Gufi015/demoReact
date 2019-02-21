@@ -6,6 +6,9 @@ class PlaceInput extends Component{
   state = {
     placeName: ""
   };
+  componentDidMount() {
+
+  }
 
   placeNameChange = val => {
     this.setState({
@@ -15,7 +18,7 @@ class PlaceInput extends Component{
 
   placeSubmit = () => {
     if(this.state.placeName.trim() === "") {
-      return;
+      return alert('Agregar un lugar!');
     }
     this.props.onPlaceAdded(this.state.placeName);
   };
